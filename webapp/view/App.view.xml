@@ -6,16 +6,12 @@
   controllerName="workshop.dashboard.controller.App"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
-  xmlns:f="sap.f"
   xmlns:tnt="sap.tnt"
   displayBlock="true"
   height="100%"
 >
 <!-- 🧩 SHELL START -->
 <tnt:ToolPage id="toolPage">
-  <tnt:header>
-    <f:ShellBar homeIcon="{app>/logo}" title="Coding Club Decision Room" secondTitle="The Friday Problem" />
-  </tnt:header>
   <tnt:subHeader>
     <IconTabHeader id="nav" selectedKey="page1" select=".onNavSelect" backgroundDesign="Solid">
       <items>
