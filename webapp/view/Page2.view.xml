@@ -1,4 +1,4 @@
-<!-- PAGE 2 is an optional deep-dive. -->
+<!-- PAGE 2: Weekly Trend & Topic Deep-Dive -->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
   xmlns="sap.m"
@@ -17,20 +17,84 @@
 <f:DynamicPage id="page2Content" headerExpanded="true" showFooter="false">
   <f:title>
     <f:DynamicPageTitle>
-      <f:heading><Title text="Page 2: rename me" level="H1" /></f:heading>
-      <f:expandedContent><Text text="What question does this page answer?" /></f:expandedContent>
+      <f:heading>
+        <Title text="Page 2: Deep Dive — Weekly Trend &amp; Topic Analysis" level="H1" />
+      </f:heading>
+      <f:expandedContent>
+        <Text text="Investigating when the attendance drop began and whether workshop topics are to blame." />
+      </f:expandedContent>
     </f:DynamicPageTitle>
   </f:title>
   <f:content>
     <VBox width="100%">
       <HBox class="wsRow" renderType="Bare">
-        <f:Card>
-          <f:header><card:Header title="Card: rename me" iconSrc="sap-icon://table-view" /></f:header>
+        <f:Card class="wsWide">
+          <f:header>
+            <card:Header 
+              title="Weekly Attendance &amp; Fill Rate (Weeks 1–10)" 
+              subtitle="Notice the sharp drop starting Week 5 (October) when workshops moved to Friday" 
+              iconSrc="sap-icon://line-chart" />
+          </f:header>
           <f:content>
             <VBox width="100%" class="sapUiSmallMargin">
               <!-- 🧩 CARD START -->
-              <Text text="Paste a block here" />
+              <viz:VizFrame id="chartWeeklyTrend" vizType="line" width="100%" height="20rem" uiConfig="{applicationSet:'fiori'}">
+                <viz:dataset>
+                  <viz.data:FlattenedDataset data="{/weeklyTrend}">
+                    <viz.data:dimensions>
+                      <viz.data:DimensionDefinition name="Week" value="{week}" />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                      <viz.data:MeasureDefinition name="Show-up %" value="{showup_pct}" />
+                      <viz.data:MeasureDefinition name="Seats Filled %" value="{fill_pct}" />
+                    </viz.data:measures>
+                  </viz.data:FlattenedDataset>
+                </viz:dataset>
+                <viz:feeds>
+                  <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Show-up %,Seats Filled %" />
+                  <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Week" />
+                </viz:feeds>
+              </viz:VizFrame>
               <!-- 🧩 CARD END -->
+            </VBox>
+          </f:content>
+        </f:Card>
+      </HBox>
+
+      <HBox class="wsRow sapUiMediumMarginTop" renderType="Bare">
+        <f:Card width="100%">
+          <f:header>
+            <card:Header 
+              title="Event Topic Comparison" 
+              subtitle="Workshops hold the highest average rating (4.5) and highest interest (45 avg sign-ups)" 
+              iconSrc="sap-icon://table-view" />
+          </f:header>
+          <f:content>
+            <VBox width="100%" class="sapUiSmallMargin">
+              <ScrollContainer horizontal="true" vertical="false" width="100%">
+                <Table items="{/topicComparison}" fixedLayout="false">
+                  <columns>
+                    <Column><Text text="Topic" /></Column>
+                    <Column hAlign="End"><Text text="Total Events" /></Column>
+                    <Column hAlign="End"><Text text="Avg Registered" /></Column>
+                    <Column hAlign="End"><Text text="Avg Checked-in" /></Column>
+                    <Column hAlign="End"><Text text="Avg Rating" /></Column>
+                    <Column hAlign="End"><Text text="Avg Show-up %" /></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <Text text="{topic}" />
+                        <ObjectNumber number="{events}" />
+                        <ObjectNumber number="{avg_registered}" />
+                        <ObjectNumber number="{avg_checked_in}" />
+                        <ObjectNumber number="{avg_rating}" unit="/ 5.0" state="{= ${avg_rating} &gt;= 4.3 ? 'Success' : 'None' }" />
+                        <ObjectNumber number="{avg_showup}" unit="%" />
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+              </ScrollContainer>
             </VBox>
           </f:content>
         </f:Card>

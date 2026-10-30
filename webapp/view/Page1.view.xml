@@ -1,7 +1,5 @@
 <!--
-  PAGE 1 is required: finding → evidence → recommended action.
-  Develop SQL in the deployed Query Playground, add it to webapp/data.js,
-  then bind the result between the matching markers below.
+  PAGE 1: finding → evidence → recommended action.
 -->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
@@ -22,7 +20,7 @@
   <f:title>
     <f:DynamicPageTitle>
       <f:heading>
-        <Title text="Page 1: rename me" level="H1" wrapping="true" />
+        <Title text="Case 01 — The Friday Problem: Analysis &amp; Action Plan" level="H1" wrapping="true" />
       </f:heading>
     </f:DynamicPageTitle>
   </f:title>
@@ -31,8 +29,8 @@
     <f:DynamicPageHeader pinnable="true">
       <VBox>
         <!-- 🧩 FINDING START -->
-        <Title text="Your finding in one sentence, the first thing the president reads." level="H2" wrapping="true" />
-        <Text text="One line of proof with a number." class="sapUiTinyMarginTop" />
+        <Title text="Finding: Low attendance is caused by Friday timing, NOT workshop fatigue." level="H2" wrapping="true" />
+        <Text text="Workshop ratings remain outstanding at 4.5/5.0 with full sign-ups, but show-up rate collapsed from 86% on Thursdays to 42% on Fridays." class="sapUiTinyMarginTop" />
         <!-- 🧩 FINDING END -->
       </VBox>
     </f:DynamicPageHeader>
@@ -41,17 +39,66 @@
   <f:content>
     <VBox width="100%">
       <!-- 🧩 KPIs START -->
+      <HBox wrap="Wrap" class="sapUiSmallMarginBottom">
+        <GenericTile header="Thursday Show-up" subheader="Weeks 1-4 (Thu)" class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+          <tileContent>
+            <TileContent unit="%">
+              <NumericContent value="{/kpis/thu_showup}" valueColor="Good" />
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile header="Friday Show-up" subheader="Weeks 5-10 (Fri)" class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+          <tileContent>
+            <TileContent unit="%">
+              <NumericContent value="{/kpis/fri_showup}" valueColor="Critical" />
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile header="Workshop Rating" subheader="Highest of all topics" class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+          <tileContent>
+            <TileContent unit="/ 5.0">
+              <NumericContent value="{/kpis/workshop_rating}" valueColor="Good" />
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile header="Sponsor at Risk" subheader="Quillmoor Software" class="sapUiSmallMarginEnd sapUiSmallMarginBottom">
+          <tileContent>
+            <TileContent unit="EUR">
+              <NumericContent value="800" valueColor="Neutral" />
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+      </HBox>
       <!-- 🧩 KPIs END -->
 
       <HBox class="wsRow" renderType="Bare">
         <f:Card class="wsWide">
           <f:header>
-            <card:Header title="Evidence A: rename me" subtitle="What does this chart prove?" iconSrc="sap-icon://bar-chart" />
+            <card:Header title="Evidence A: Attendance by Weekday" subtitle="Friday is the single failure point (42% vs 86% on Thursday)" iconSrc="sap-icon://bar-chart" />
           </f:header>
           <f:content>
             <VBox width="100%" class="sapUiSmallMargin">
               <!-- 🧩 EVIDENCE A START -->
-              <Text text="Paste the chart that proves your finding here" />
+              <viz:VizFrame id="chartWeekday" vizType="column" width="100%" height="18rem" uiConfig="{applicationSet:'fiori'}">
+                <viz:dataset>
+                  <viz.data:FlattenedDataset data="{/showupByWeekday}">
+                    <viz.data:dimensions>
+                      <viz.data:DimensionDefinition name="Weekday" value="{weekday}" />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                      <viz.data:MeasureDefinition name="Show-up %" value="{showup_pct}" />
+                      <viz.data:MeasureDefinition name="Seats Filled %" value="{fill_pct}" />
+                    </viz.data:measures>
+                  </viz.data:FlattenedDataset>
+                </viz:dataset>
+                <viz:feeds>
+                  <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Show-up %,Seats Filled %" />
+                  <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Weekday" />
+                </viz:feeds>
+              </viz:VizFrame>
               <!-- 🧩 EVIDENCE A END -->
             </VBox>
           </f:content>
@@ -59,12 +106,31 @@
 
         <f:Card>
           <f:header>
-            <card:Header title="Evidence B: rename me" subtitle="Why did it happen?" iconSrc="sap-icon://detail-view" />
+            <card:Header title="Evidence B: Workshop by Day of Week" subtitle="Workshops succeed on Thu &amp; Wed; fail only on Fri" iconSrc="sap-icon://detail-view" />
           </f:header>
           <f:content>
             <VBox width="100%" class="sapUiSmallMargin">
               <!-- 🧩 EVIDENCE B START -->
-              <Text text="Paste a supporting list, table or micro chart here" />
+              <ScrollContainer horizontal="true" vertical="false" width="100%">
+                <Table items="{/workshopByDay}" fixedLayout="false">
+                  <columns>
+                    <Column><Text text="Day" /></Column>
+                    <Column hAlign="End"><Text text="Show-up %" /></Column>
+                    <Column hAlign="End"><Text text="Fill %" /></Column>
+                    <Column hAlign="End"><Text text="Rating" /></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <Text text="{weekday}" />
+                        <ObjectNumber number="{showup_pct}" unit="%" state="{= ${showup_pct} &gt;= 70 ? 'Success' : 'Error' }" />
+                        <ObjectNumber number="{fill_pct}" unit="%" />
+                        <ObjectNumber number="{rating}" unit="/ 5" state="Success" />
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+              </ScrollContainer>
               <!-- 🧩 EVIDENCE B END -->
             </VBox>
           </f:content>
@@ -72,14 +138,22 @@
       </HBox>
 
       <HBox class="wsRow" renderType="Bare">
-        <f:Card>
+        <f:Card width="100%">
           <f:header>
-            <card:Header title="Recommended action" subtitle="What should they do next semester?" iconSrc="sap-icon://action" />
+            <card:Header title="Recommended Action for Sponsor Meeting" subtitle="Decision for Friday, November 20" iconSrc="sap-icon://action" />
           </f:header>
           <f:content>
             <VBox width="100%" class="sapUiSmallMargin">
               <!-- 🧩 ACTION START -->
-              <MessageStrip text="Write your recommendation here, with the number it is based on." type="Information" showIcon="true" />
+              <MessageStrip 
+                text="1. DO NOT cancel workshops: Students love them (4.5 rating) and cancelling forfeits the EUR 800 Quillmoor Software sponsorship." 
+                type="Warning" 
+                showIcon="true" 
+                class="sapUiTinyMarginBottom" />
+              <MessageStrip 
+                text="2. RESCHEDULE to Tuesday: Ditch Friday evenings. Move next semester's workshops to Tuesday 18:00–20:00 in Room M105, which is confirmed 100% free in Spring 2027 room bookings." 
+                type="Success" 
+                showIcon="true" />
               <!-- 🧩 ACTION END -->
             </VBox>
           </f:content>

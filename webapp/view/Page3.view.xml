@@ -1,4 +1,4 @@
-<!-- PAGE 3 is an optional deep-dive. -->
+<!-- PAGE 3: Spring 2027 Room Schedule & Action Plan -->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
   xmlns="sap.m"
@@ -17,20 +17,98 @@
 <f:DynamicPage id="page3Content" headerExpanded="true" showFooter="false">
   <f:title>
     <f:DynamicPageTitle>
-      <f:heading><Title text="Page 3: rename me" level="H1" /></f:heading>
-      <f:expandedContent><Text text="What question does this page answer?" /></f:expandedContent>
+      <f:heading>
+        <Title text="Page 3: Spring 2027 Room Schedule &amp; Transition Plan" level="H1" />
+      </f:heading>
+      <f:expandedContent>
+        <Text text="Proof of room availability for next semester and checklist for the sponsor renewal meeting." />
+      </f:expandedContent>
     </f:DynamicPageTitle>
   </f:title>
   <f:content>
     <VBox width="100%">
       <HBox class="wsRow" renderType="Bare">
-        <f:Card>
-          <f:header><card:Header title="Card: rename me" iconSrc="sap-icon://table-view" /></f:header>
+        <f:Card class="wsWide">
+          <f:header>
+            <card:Header 
+              title="Next Semester Bookings: Room M105 (Computer Lab)" 
+              subtitle="Notice that Tuesday is 100% UNBOOKED and open for Coding Club workshops" 
+              iconSrc="sap-icon://table-view" />
+          </f:header>
           <f:content>
             <VBox width="100%" class="sapUiSmallMargin">
               <!-- 🧩 CARD START -->
-              <Text text="Paste a block here" />
+              <ScrollContainer horizontal="true" vertical="false" width="100%">
+                <Table items="{/nextSemesterM105}" fixedLayout="false">
+                  <columns>
+                    <Column><Text text="Room" /></Column>
+                    <Column><Text text="Weekday" /></Column>
+                    <Column><Text text="Time Slot" /></Column>
+                    <Column><Text text="Booked By" /></Column>
+                    <Column><Text text="Status" /></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <Text text="{room}" />
+                        <Text text="{weekday}" />
+                        <Text text="{start_time} - {end_time}" />
+                        <Text text="{booked_by}" />
+                        <ObjectStatus text="Occupied" state="Warning" />
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+              </ScrollContainer>
+              <MessageStrip 
+                text="Tuesday is completely free all evening! Booking Tuesday 18:00 - 20:00 avoids all conflicts and solves the Friday drop-off." 
+                type="Success" 
+                showIcon="true" 
+                class="sapUiSmallMarginTop" />
               <!-- 🧩 CARD END -->
+            </VBox>
+          </f:content>
+        </f:Card>
+
+        <f:Card>
+          <f:header>
+            <card:Header 
+              title="Sponsor Meeting Checklist" 
+              subtitle="Meeting on Friday, Nov 20 with Quillmoor Software" 
+              iconSrc="sap-icon://checklist" />
+          </f:header>
+          <f:content>
+            <VBox width="100%" class="sapUiSmallMargin">
+              <List showSeparators="Inner">
+                <StandardListItem 
+                  title="1. Reassure the Sponsor" 
+                  description="Share that student satisfaction for workshops is 4.5/5.0 with strong sign-ups." 
+                  icon="sap-icon://accept" 
+                  info="Done" 
+                  infoState="Success" 
+                  wrapping="true" />
+                <StandardListItem 
+                  title="2. Present Root Cause Evidence" 
+                  description="Show the weekday attendance comparison (86% on Thu vs 42% on Fri)." 
+                  icon="sap-icon://bar-chart" 
+                  info="Ready" 
+                  infoState="Information" 
+                  wrapping="true" />
+                <StandardListItem 
+                  title="3. Propose Tuesday 18:00 Slot" 
+                  description="Present the plan to move workshops to Tuesday in lab M105." 
+                  icon="sap-icon://calendar" 
+                  info="Action" 
+                  infoState="Success" 
+                  wrapping="true" />
+                <StandardListItem 
+                  title="4. Secure EUR 800 Renewal" 
+                  description="Keep the Quillmoor Software funding dedicated to tech workshops." 
+                  icon="sap-icon://money-bills" 
+                  info="Target" 
+                  infoState="Success" 
+                  wrapping="true" />
+              </List>
             </VBox>
           </f:content>
         </f:Card>
