@@ -1,95 +1,164 @@
-<!--
-  PAGE 1 is required: finding → evidence → recommended action.
-  Develop SQL in the deployed Query Playground, add it to webapp/data.js,
-  then bind the result between the matching markers below.
--->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:f="sap.f"
   xmlns:card="sap.f.cards"
-  xmlns:layout="sap.ui.layout"
-  xmlns:mc="sap.suite.ui.microchart"
   xmlns:viz="sap.viz.ui5.controls"
   xmlns:viz.data="sap.viz.ui5.data"
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
   displayBlock="true"
-  height="100%"
->
-<!-- 🧩 PAGE START -->
-<f:DynamicPage id="page1Content" headerExpanded="true" showFooter="false">
-  <f:title>
-    <f:DynamicPageTitle>
-      <f:heading>
-        <Title text="Page 1: rename me" level="H1" wrapping="true" />
-      </f:heading>
-    </f:DynamicPageTitle>
-  </f:title>
+  height="100%">
+  <f:DynamicPage id="page1Content" headerExpanded="true" showFooter="false" class="decisionPage">
+    <f:title>
+      <f:DynamicPageTitle>
+        <f:heading>
+          <VBox>
+            <Label text="THE ANSWER · SPONSOR RENEWAL BRIEF" class="eyebrowLabel" />
+            <Title text="Demand is not the problem. Friday no-shows are." level="H1" wrapping="true" />
+          </VBox>
+        </f:heading>
+        <f:snappedContent>
+          <ObjectStatus text="Timing is the root cause" state="Error" icon="sap-icon://alert" />
+        </f:snappedContent>
+        <f:actions>
+          <Button text="See the proof" type="Transparent" icon="sap-icon://inspection" press=".onOpenEvidence" />
+          <Button text="Open the plan" type="Emphasized" icon="sap-icon://calendar" press=".onOpenPlan" />
+        </f:actions>
+      </f:DynamicPageTitle>
+    </f:title>
 
-  <f:header>
-    <f:DynamicPageHeader pinnable="true">
-      <VBox>
-        <!-- 🧩 FINDING START -->
-        <Title text="Your finding in one sentence, the first thing the president reads." level="H2" wrapping="true" />
-        <Text text="One line of proof with a number." class="sapUiTinyMarginTop" />
-        <!-- 🧩 FINDING END -->
+    <f:header>
+      <f:DynamicPageHeader pinnable="true" class="storyHeader">
+        <VBox class="heroContent">
+          <HBox alignItems="Center" class="heroMeta" wrap="Wrap">
+            <ObjectStatus text="H3 · TIMING CONFIRMED" state="Error" inverted="true" />
+            <Text text="Coding Club · 20 events · Autumn 2026" />
+          </HBox>
+          <Title
+            text="Friday events still register 92.9% of seats—but only 42.2% of registrants show up."
+            level="H2"
+            wrapping="true"
+            class="heroHeadline" />
+          <Text
+            text="Students want the workshops. The recurring Friday slot turns that demand into empty seats. Keep the sponsor-backed programme and move the session to Tuesday."
+            wrapping="true"
+            class="heroSummary" />
+        </VBox>
+      </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+      <VBox width="100%" class="wsPageContent">
+        <Title text="The decision in four numbers" level="H2" class="sectionTitle" />
+        <Text text="Registration remains strong; the collapse happens at the door." class="sectionSubtitle" />
+
+        <HBox class="wsKpiRow" renderType="Bare" wrap="Wrap">
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Seats registered" subtitle="Friday · demand" number="{/decisionSummary/friday_registration}" unitOfMeasurement="%" state="Good" details="Nearly sold out before the event" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard kpiCritical">
+            <f:header>
+              <card:NumericHeader title="Registrants who arrive" subtitle="Friday · show-up" number="{/decisionSummary/friday_showup}" unitOfMeasurement="%" state="Error" details="Midweek reaches 85.3%" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard kpiCritical">
+            <f:header>
+              <card:NumericHeader title="Friday no-shows" subtitle="Across only 6 events" number="{/decisionSummary/friday_no_shows}" state="Error" details="14 midweek events have 133" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Workshop rating" subtitle="Friday attendees" number="{/decisionSummary/friday_rating}" unitOfMeasurement="/ 5" state="Good" details="Content remains highly rated" />
+            </f:header>
+          </f:Card>
+        </HBox>
+
+        <Title text="Where the seats disappear" level="H2" class="sectionTitle sectionGap" />
+        <Text text="Registration demand is nearly identical. Actual attendance is not." class="sectionSubtitle" />
+
+        <HBox class="wsRow" renderType="Bare" wrap="Wrap">
+          <f:Card class="wsWide evidenceCard">
+            <f:header>
+              <card:Header
+                title="Registered versus checked in"
+                subtitle="Share of available seats · Coding Club"
+                iconSrc="sap-icon://vertical-bar-chart" />
+            </f:header>
+            <f:content>
+              <VBox class="cardContent">
+                <viz:VizFrame id="attendanceJourneyChart" vizType="column" height="21rem" width="100%" uiConfig="{applicationSet:'fiori'}">
+                  <viz:dataset>
+                    <viz.data:FlattenedDataset data="{/attendanceJourney}">
+                      <viz.data:dimensions>
+                        <viz.data:DimensionDefinition name="Time slot" value="{slot}" />
+                      </viz.data:dimensions>
+                      <viz.data:measures>
+                        <viz.data:MeasureDefinition name="Registered (%)" value="{registered_pct}" />
+                        <viz.data:MeasureDefinition name="Checked in (%)" value="{checked_in_pct}" />
+                      </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                  </viz:dataset>
+                  <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Registered (%),Checked in (%)" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Time slot" />
+                  </viz:feeds>
+                </viz:VizFrame>
+                <MessageStrip
+                  text="Friday demand is only 1.6 points below midweek, but actual seat fill falls by 41.4 points."
+                  type="Error"
+                  showIcon="true"
+                  class="insightStrip" />
+              </VBox>
+            </f:content>
+          </f:Card>
+
+          <f:Card class="evidenceCard storyCard">
+            <f:header>
+              <card:Header title="The 3-second explanation" subtitle="What the president needs to know" iconSrc="sap-icon://lightbulb" />
+            </f:header>
+            <f:content>
+              <VBox class="cardContent proofPoints">
+                <HBox class="proofPoint" alignItems="Start">
+                  <ObjectStatus text="Demand exists" state="Success" icon="sap-icon://accept" inverted="true" />
+                  <Text text="223 of 240 Friday seats were registered." wrapping="true" />
+                </HBox>
+                <HBox class="proofPoint" alignItems="Start">
+                  <ObjectStatus text="Arrival fails" state="Error" icon="sap-icon://decline" inverted="true" />
+                  <Text text="Only 94 registrants checked in—129 did not arrive." wrapping="true" />
+                </HBox>
+                <HBox class="proofPoint" alignItems="Start">
+                  <ObjectStatus text="Content works" state="Success" icon="sap-icon://favorite" inverted="true" />
+                  <Text text="Friday workshops still earn 4.4 out of 5." wrapping="true" />
+                </HBox>
+                <MessageStrip text="Changing topics would treat the symptom, not the cause." type="Warning" showIcon="true" class="insightStrip" />
+                <Button text="Review all three hypotheses" type="Transparent" icon="sap-icon://navigation-right-arrow" press=".onOpenEvidence" />
+              </VBox>
+            </f:content>
+          </f:Card>
+        </HBox>
+
+        <f:Card class="actionCard sectionGap">
+          <f:header>
+            <card:Header title="Recommended decision" subtitle="Protect the programme and test the timing fix" iconSrc="sap-icon://activate" />
+          </f:header>
+          <f:content>
+            <HBox class="actionContent" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
+              <VBox class="actionCopy">
+                <Label text="NEXT SEMESTER" class="eyebrowLabel" />
+                <Title text="Keep the workshops. Move M105 to Tuesday at 18:00." level="H3" wrapping="true" />
+                <Text text="Run a four-workshop pilot. Keep topics and promotion stable so timing is the only changed variable." wrapping="true" />
+              </VBox>
+              <VBox alignItems="End" class="actionStatus">
+                <ObjectStatus text="M105 is available" state="Success" icon="sap-icon://accept" inverted="true" />
+                <Button text="Open the action plan" type="Emphasized" icon="sap-icon://navigation-right-arrow" press=".onOpenPlan" class="sapUiSmallMarginTop" />
+              </VBox>
+            </HBox>
+          </f:content>
+        </f:Card>
       </VBox>
-    </f:DynamicPageHeader>
-  </f:header>
-
-  <f:content>
-    <VBox width="100%">
-      <!-- 🧩 KPIs START -->
-      <!-- 🧩 KPIs END -->
-
-      <HBox class="wsRow" renderType="Bare">
-        <f:Card class="wsWide">
-          <f:header>
-            <card:Header title="Evidence A: rename me" subtitle="What does this chart prove?" iconSrc="sap-icon://bar-chart" />
-          </f:header>
-          <f:content>
-            <VBox width="100%" class="sapUiSmallMargin">
-              <!-- 🧩 EVIDENCE A START -->
-              <Text text="Paste the chart that proves your finding here" />
-              <!-- 🧩 EVIDENCE A END -->
-            </VBox>
-          </f:content>
-        </f:Card>
-
-        <f:Card>
-          <f:header>
-            <card:Header title="Evidence B: rename me" subtitle="Why did it happen?" iconSrc="sap-icon://detail-view" />
-          </f:header>
-          <f:content>
-            <VBox width="100%" class="sapUiSmallMargin">
-              <!-- 🧩 EVIDENCE B START -->
-              <Text text="Paste a supporting list, table or micro chart here" />
-              <!-- 🧩 EVIDENCE B END -->
-            </VBox>
-          </f:content>
-        </f:Card>
-      </HBox>
-
-      <HBox class="wsRow" renderType="Bare">
-        <f:Card>
-          <f:header>
-            <card:Header title="Recommended action" subtitle="What should they do next semester?" iconSrc="sap-icon://action" />
-          </f:header>
-          <f:content>
-            <VBox width="100%" class="sapUiSmallMargin">
-              <!-- 🧩 ACTION START -->
-              <MessageStrip text="Write your recommendation here, with the number it is based on." type="Information" showIcon="true" />
-              <!-- 🧩 ACTION END -->
-            </VBox>
-          </f:content>
-        </f:Card>
-      </HBox>
-
-      <!-- 🧩 MORE START -->
-      <!-- 🧩 MORE END -->
-    </VBox>
-  </f:content>
-</f:DynamicPage>
-<!-- 🧩 PAGE END -->
+    </f:content>
+  </f:DynamicPage>
 </mvc:View>

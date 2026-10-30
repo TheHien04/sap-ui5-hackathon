@@ -6,8 +6,8 @@
     "applicationVersion": {
       "version": "1.0.0"
     },
-    "title": "My App",
-    "description": "Hackathon starter app with local SQLite data"
+    "title": "Coding Club Decision Room",
+    "description": "Evidence-led response to the Coding Club Friday attendance problem"
   },
   "sap.ui": {
     "technology": "UI5",

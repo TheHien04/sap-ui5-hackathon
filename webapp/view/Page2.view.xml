@@ -1,44 +1,152 @@
-<!-- PAGE 2 is an optional deep-dive. -->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:f="sap.f"
   xmlns:card="sap.f.cards"
-  xmlns:layout="sap.ui.layout"
-  xmlns:mc="sap.suite.ui.microchart"
   xmlns:viz="sap.viz.ui5.controls"
   xmlns:viz.data="sap.viz.ui5.data"
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
   displayBlock="true"
-  height="100%"
->
-<!-- 🧩 PAGE START -->
-<f:DynamicPage id="page2Content" headerExpanded="true" showFooter="false">
-  <f:title>
-    <f:DynamicPageTitle>
-      <f:heading><Title text="Page 2: rename me" level="H1" /></f:heading>
-      <f:expandedContent><Text text="What question does this page answer?" /></f:expandedContent>
-    </f:DynamicPageTitle>
-  </f:title>
-  <f:content>
-    <VBox width="100%">
-      <HBox class="wsRow" renderType="Bare">
-        <f:Card>
-          <f:header><card:Header title="Card: rename me" iconSrc="sap-icon://table-view" /></f:header>
+  height="100%">
+  <f:DynamicPage id="page2Content" headerExpanded="true" showFooter="false" class="decisionPage">
+    <f:title>
+      <f:DynamicPageTitle>
+        <f:heading>
+          <VBox>
+            <Label text="THE PROOF · THREE SUSPECTS" class="eyebrowLabel" />
+            <Title text="Only timing survives the evidence" level="H1" wrapping="true" />
+          </VBox>
+        </f:heading>
+        <f:expandedContent>
+          <Text text="Topics remain highly rated. Promotion still creates demand. Friday repeatedly destroys show-up." />
+        </f:expandedContent>
+        <f:actions>
+          <Button text="Act on the finding" type="Emphasized" icon="sap-icon://calendar" press=".onOpenPlan" />
+        </f:actions>
+      </f:DynamicPageTitle>
+    </f:title>
+
+    <f:content>
+      <VBox width="100%" class="wsPageContent">
+        <f:Card width="100%" class="evidenceCard">
+          <f:header>
+            <card:Header title="Hypothesis scorecard" subtitle="One explanation fits all four tables" iconSrc="sap-icon://inspection" />
+          </f:header>
           <f:content>
-            <VBox width="100%" class="sapUiSmallMargin">
-              <!-- 🧩 CARD START -->
-              <Text text="Paste a block here" />
-              <!-- 🧩 CARD END -->
+            <Table items="{/hypothesisChecks}" inset="false" class="evidenceTable">
+              <columns>
+                <Column width="12rem"><Text text="Suspect" /></Column>
+                <Column><Text text="Decisive evidence" /></Column>
+                <Column width="10rem" hAlign="End"><Text text="Verdict" /></Column>
+              </columns>
+              <items>
+                <ColumnListItem vAlign="Middle">
+                  <cells>
+                    <ObjectIdentifier title="{hypothesis}" />
+                    <Text text="{evidence}" wrapping="true" />
+                    <ObjectStatus text="{verdict}" state="{state}" inverted="true" />
+                  </cells>
+                </ColumnListItem>
+              </items>
+            </Table>
+          </f:content>
+        </f:Card>
+
+        <HBox class="wsRow sectionGap" renderType="Bare" wrap="Wrap">
+          <f:Card class="evidenceCard">
+            <f:header>
+              <card:Header title="H1 · Are workshops boring?" subtitle="Same content, different timing" iconSrc="sap-icon://favorite" />
+            </f:header>
+            <f:content>
+              <VBox class="cardContent">
+                <viz:VizFrame id="workshopTimingChart" vizType="column" height="18rem" width="100%" uiConfig="{applicationSet:'fiori'}">
+                  <viz:dataset>
+                    <viz.data:FlattenedDataset data="{/workshopTiming}">
+                      <viz.data:dimensions>
+                        <viz.data:DimensionDefinition name="Workshop timing" value="{slot}" />
+                      </viz.data:dimensions>
+                      <viz.data:measures>
+                        <viz.data:MeasureDefinition name="Seat fill (%)" value="{avg_fill}" />
+                        <viz.data:MeasureDefinition name="Show-up (%)" value="{avg_showup}" />
+                      </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                  </viz:dataset>
+                  <viz:feeds>
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Seat fill (%),Show-up (%)" />
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Workshop timing" />
+                  </viz:feeds>
+                </viz:VizFrame>
+                <MessageStrip text="Ratings are effectively identical: 4.50 Friday vs 4.48 midweek. Content quality does not explain the 44-point attendance gap." type="Success" showIcon="true" class="insightStrip" />
+              </VBox>
+            </f:content>
+          </f:Card>
+
+          <f:Card class="evidenceCard">
+            <f:header>
+              <card:Header title="H2 · Is promotion too weak?" subtitle="Like-for-like check · week 5" iconSrc="sap-icon://marketing-campaign" />
+            </f:header>
+            <f:content>
+              <VBox class="cardContent">
+                <Table items="{/promotionPair}" inset="false" class="compactCompareTable">
+                  <columns>
+                    <Column><Text text="Event" /></Column>
+                    <Column width="5rem" hAlign="End"><Text text="Reach" /></Column>
+                    <Column width="5rem" hAlign="End"><Text text="Fill" /></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <ObjectIdentifier title="{title}" text="{weekday} · {start_time}" />
+                        <ObjectNumber number="{reach}" />
+                        <ObjectNumber number="{fill_pct}" unit="%" state="{= ${fill_pct} &lt; 50 ? 'Error' : 'Success' }" />
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+                <MessageStrip text="Reach is nearly equal (746 vs 741), yet Friday fills 38% versus Wednesday's 74%. Across all 90 events, reach and fill are nearly uncorrelated." type="Information" showIcon="true" class="insightStrip" />
+              </VBox>
+            </f:content>
+          </f:Card>
+        </HBox>
+
+        <f:Card width="100%" class="evidenceCard sectionGap rootCauseCard">
+          <f:header>
+            <card:Header title="H3 · Friday fails across every comparable club" subtitle="Average seat fill · Friday versus Monday–Thursday" iconSrc="sap-icon://compare" />
+          </f:header>
+          <f:content>
+            <VBox class="cardContent">
+              <viz:VizFrame id="crossClubFridayChart" vizType="bar" height="24rem" width="100%" uiConfig="{applicationSet:'fiori'}">
+                <viz:dataset>
+                  <viz.data:FlattenedDataset data="{/crossClubFriday}">
+                    <viz.data:dimensions>
+                      <viz.data:DimensionDefinition name="Club" value="{club}" />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                      <viz.data:MeasureDefinition name="Monday–Thursday (%)" value="{weekday_fill}" />
+                      <viz.data:MeasureDefinition name="Friday (%)" value="{friday_fill}" />
+                    </viz.data:measures>
+                  </viz.data:FlattenedDataset>
+                </viz:dataset>
+                <viz:feeds>
+                  <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Monday–Thursday (%),Friday (%)" />
+                  <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Club" />
+                </viz:feeds>
+              </viz:VizFrame>
+              <MessageStrip text="Complete separation: every Friday event in the database fills 33–48% of seats; every Monday–Thursday event fills 70–90%. The pattern repeats across rooms, times and seven clubs." type="Error" showIcon="true" class="insightStrip" />
             </VBox>
           </f:content>
         </f:Card>
-      </HBox>
-      <!-- 🧩 MORE START -->
-      <!-- 🧩 MORE END -->
-    </VBox>
-  </f:content>
-</f:DynamicPage>
-<!-- 🧩 PAGE END -->
+
+        <HBox class="verdictBand sectionGap" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
+          <VBox>
+            <Label text="VERDICT" class="eyebrowLabel" />
+            <Title text="Keep the content. Change the calendar." level="H2" wrapping="true" />
+            <Text text="Timing is the only hypothesis supported by event, promotion, club and room data." wrapping="true" />
+          </VBox>
+          <Button text="Build the Tuesday pilot" type="Emphasized" icon="sap-icon://navigation-right-arrow" press=".onOpenPlan" />
+        </HBox>
+      </VBox>
+    </f:content>
+  </f:DynamicPage>
 </mvc:View>

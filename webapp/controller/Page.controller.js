@@ -10,6 +10,14 @@ sap.ui.define([
   return BaseController.extend("workshop.dashboard.controller.Page", {
     onInit: function () {
       this.styleCharts(this.getView());
+    },
+
+    onOpenPlan: function () {
+      this.getRouter().navTo("page3");
+    },
+
+    onOpenEvidence: function () {
+      this.getRouter().navTo("page2");
     }
   });
 });

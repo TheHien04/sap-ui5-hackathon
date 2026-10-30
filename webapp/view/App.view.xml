@@ -14,14 +14,14 @@
 <!-- 🧩 SHELL START -->
 <tnt:ToolPage id="toolPage">
   <tnt:header>
-    <f:ShellBar homeIcon="{app>/logo}" title="My app: rename me" />
+    <f:ShellBar homeIcon="{app>/logo}" title="Coding Club Decision Room" secondTitle="The Friday Problem" />
   </tnt:header>
   <tnt:subHeader>
     <IconTabHeader id="nav" selectedKey="page1" select=".onNavSelect" backgroundDesign="Solid">
       <items>
-        <IconTabFilter key="page1" text="The answer" />
-        <IconTabFilter key="page2" text="Page 2" />
-        <IconTabFilter key="page3" text="Page 3" />
+        <IconTabFilter key="page1" text="The answer" icon="sap-icon://business-objects-experience" />
+        <IconTabFilter key="page2" text="The proof" icon="sap-icon://inspection" />
+        <IconTabFilter key="page3" text="The action" icon="sap-icon://calendar" />
       </items>
     </IconTabHeader>
   </tnt:subHeader>

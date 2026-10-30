@@ -33,13 +33,22 @@ sap.ui.define([
         }
         chart.data("styled", true);
         const type = chart.getVizType();
-        const isTrend = /line|combination|column/.test(type);
+        const isTrend = /line|combination/.test(type);
         const isPie = /pie|donut/.test(type);
+        const chartId = chart.getId();
+        let colorPalette = type === "line" ? ["#2563eb", "#dc2626"] : ["#2563eb", "#d97706", "#dc2626"];
+
+        // Keep the weekday baseline blue and make the Friday exception red.
+        // Labels remain visible so the comparison never depends on colour alone.
+        if (chartId.indexOf("crossClubFridayChart") > -1) {
+          colorPalette = ["#2563eb", "#dc2626"];
+        }
         chart.setVizProperties({
           title: { visible: false },
           legend: { visible: true },
           legendGroup: { layout: { position: "bottom" } },
           plotArea: {
+            colorPalette: colorPalette,
             dataLabel: { visible: !isTrend, type: isPie ? "percentage" : "value" },
             adjustScale: /line|combination/.test(type),
             window: { start: "firstDataPoint", end: "lastDataPoint" }

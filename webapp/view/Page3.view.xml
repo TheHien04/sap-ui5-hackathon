@@ -1,44 +1,128 @@
-<!-- PAGE 3 is an optional deep-dive. -->
 <mvc:View
   controllerName="workshop.dashboard.controller.Page"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:f="sap.f"
   xmlns:card="sap.f.cards"
-  xmlns:layout="sap.ui.layout"
-  xmlns:mc="sap.suite.ui.microchart"
-  xmlns:viz="sap.viz.ui5.controls"
-  xmlns:viz.data="sap.viz.ui5.data"
-  xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
   displayBlock="true"
-  height="100%"
->
-<!-- 🧩 PAGE START -->
-<f:DynamicPage id="page3Content" headerExpanded="true" showFooter="false">
-  <f:title>
-    <f:DynamicPageTitle>
-      <f:heading><Title text="Page 3: rename me" level="H1" /></f:heading>
-      <f:expandedContent><Text text="What question does this page answer?" /></f:expandedContent>
-    </f:DynamicPageTitle>
-  </f:title>
-  <f:content>
-    <VBox width="100%">
-      <HBox class="wsRow" renderType="Bare">
-        <f:Card>
-          <f:header><card:Header title="Card: rename me" iconSrc="sap-icon://table-view" /></f:header>
-          <f:content>
-            <VBox width="100%" class="sapUiSmallMargin">
-              <!-- 🧩 CARD START -->
-              <Text text="Paste a block here" />
-              <!-- 🧩 CARD END -->
-            </VBox>
-          </f:content>
-        </f:Card>
-      </HBox>
-      <!-- 🧩 MORE START -->
-      <!-- 🧩 MORE END -->
-    </VBox>
-  </f:content>
-</f:DynamicPage>
-<!-- 🧩 PAGE END -->
+  height="100%">
+  <f:DynamicPage id="page3Content" headerExpanded="true" showFooter="false" class="decisionPage">
+    <f:title>
+      <f:DynamicPageTitle>
+        <f:heading>
+          <VBox>
+            <Label text="THE ACTION · CONTROLLED PILOT" class="eyebrowLabel" />
+            <Title text="Move Tuesday. Measure four weeks. Scale only if it works." level="H1" wrapping="true" />
+          </VBox>
+        </f:heading>
+        <f:expandedContent>
+          <Text text="Change one variable—timing—while keeping content and promotion stable." />
+        </f:expandedContent>
+      </f:DynamicPageTitle>
+    </f:title>
+    <f:header>
+      <f:DynamicPageHeader pinnable="false" class="planHeader">
+        <HBox alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap" class="planHero">
+          <VBox>
+            <Label text="RECOMMENDED BOOKING" class="eyebrowLabel" />
+            <Title text="M105 · Tuesday · 18:00–20:00" level="H2" wrapping="true" />
+            <Text text="Same lab, same workshop promise, better night." />
+          </VBox>
+          <ObjectStatus text="{/actionPlan/availability}" state="Success" icon="sap-icon://accept" inverted="true" />
+        </HBox>
+      </f:DynamicPageHeader>
+    </f:header>
+    <f:content>
+      <VBox width="100%" class="wsPageContent">
+        <Title text="The pilot contract" level="H2" class="sectionTitle" />
+        <Text text="Agree the duration, expected recovery and success threshold before the first event." class="sectionSubtitle" />
+
+        <HBox class="wsKpiRow" renderType="Bare" wrap="Wrap">
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Pilot duration" subtitle="Consecutive workshops" number="{/pilotImpact/pilot_events}" unitOfMeasurement="events" state="Neutral" details="Review after week four" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Expected recovery" subtitle="Versus Friday baseline" number="{/pilotImpact/extra_checkins_per_event}" unitOfMeasurement="people" state="Good" details="Additional check-ins per event" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Target seat fill" subtitle="Scale threshold" number="{/pilotImpact/target_fill}" unitOfMeasurement="%" state="Good" details="Current Friday baseline: 39.2%" />
+            </f:header>
+          </f:Card>
+          <f:Card class="wsKpiCard">
+            <f:header>
+              <card:NumericHeader title="Target show-up" subtitle="Of registered students" number="{/pilotImpact/target_showup}" unitOfMeasurement="%" state="Good" details="Current Friday baseline: 42.2%" />
+            </f:header>
+          </f:Card>
+        </HBox>
+
+        <HBox class="wsRow" renderType="Bare" wrap="Wrap">
+          <f:Card class="evidenceCard">
+            <f:header>
+              <card:Header title="Four-week pilot" subtitle="A measurable commitment" iconSrc="sap-icon://process" />
+            </f:header>
+            <f:content>
+              <VBox class="cardContent planSteps">
+                <HBox class="planStep" alignItems="Start">
+                  <ObjectNumber number="1" emphasized="true" state="Information" />
+                  <VBox><Title text="Book the slot" level="H4" /><Text text="Reserve M105 on Tuesday at 18:00 for the first four workshop weeks." wrapping="true" /></VBox>
+                </HBox>
+                <HBox class="planStep" alignItems="Start">
+                  <ObjectNumber number="2" emphasized="true" state="Information" />
+                  <VBox><Title text="Keep the format stable" level="H4" /><Text text="Do not change topic mix or promotion cadence during the pilot." wrapping="true" /></VBox>
+                </HBox>
+                <HBox class="planStep" alignItems="Start">
+                  <ObjectNumber number="3" emphasized="true" state="Information" />
+                  <VBox><Title text="Measure both conversion steps" level="H4" /><Text text="Track registered → checked in and checked in → room capacity after every event." wrapping="true" /></VBox>
+                </HBox>
+                <HBox class="planStep" alignItems="Start">
+                  <ObjectNumber number="4" emphasized="true" state="Success" />
+                  <VBox><Title text="Scale only at threshold" level="H4" /><Text text="Make Tuesday permanent only if average fill reaches 75% and show-up reaches 80%." wrapping="true" /></VBox>
+                </HBox>
+              </VBox>
+            </f:content>
+          </f:Card>
+
+          <f:Card class="evidenceCard">
+            <f:header>
+              <card:Header title="M105 next-semester availability" subtitle="Existing weekly bookings" iconSrc="sap-icon://appointment-2" />
+            </f:header>
+            <f:content>
+              <Table items="{/nextSemesterBookings}" inset="false" class="bookingTable">
+                <columns>
+                  <Column width="5rem"><Text text="Day" /></Column>
+                  <Column width="7rem" minScreenWidth="Tablet" demandPopin="true"><Text text="Time" /></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Use" /></Column>
+                  <Column width="7rem" hAlign="End"><Text text="Status" /></Column>
+                </columns>
+                <items>
+                  <ColumnListItem highlight="{state}">
+                    <cells>
+                      <Text text="{weekday}" />
+                      <Text text="{time_range}" />
+                      <Text text="{booked_by}" wrapping="true" />
+                      <ObjectStatus text="{status}" state="{state}" />
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </f:content>
+          </f:Card>
+        </HBox>
+
+        <HBox class="targetBand sectionGap" alignItems="Center" justifyContent="SpaceBetween" wrap="Wrap">
+          <VBox>
+            <Label text="PILOT SUCCESS THRESHOLD" class="eyebrowLabel" />
+            <Title text="75% seat fill + 80% show-up" level="H2" />
+            <Text text="Nearly double the current Friday baseline while preserving workshop ratings." />
+          </VBox>
+          <ObjectStatus text="Review after 4 workshops" state="Information" icon="sap-icon://pending" inverted="true" />
+        </HBox>
+      </VBox>
+    </f:content>
+  </f:DynamicPage>
 </mvc:View>
