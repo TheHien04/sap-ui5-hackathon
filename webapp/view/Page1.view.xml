@@ -9,7 +9,7 @@
   xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
   displayBlock="true"
   height="100%">
-  <f:DynamicPage id="page1Content" headerExpanded="true" showFooter="false" class="decisionPage">
+  <f:DynamicPage id="page1Content" showFooter="false" class="decisionPage">
     <f:title>
       <f:DynamicPageTitle>
         <f:heading>
@@ -27,26 +27,6 @@
         </f:actions>
       </f:DynamicPageTitle>
     </f:title>
-
-    <f:header>
-      <f:DynamicPageHeader pinnable="true" class="storyHeader">
-        <VBox class="heroContent">
-          <HBox alignItems="Center" class="heroMeta" wrap="Wrap">
-            <ObjectStatus text="H3 · TIMING CONFIRMED" state="Error" inverted="true" />
-            <Text text="Coding Club · 20 events · Autumn 2026" />
-          </HBox>
-          <Title
-            text="Friday events still register 92.9% of seats—but only 42.2% of registrants show up."
-            level="H2"
-            wrapping="true"
-            class="heroHeadline" />
-          <Text
-            text="Students want the workshops. The recurring Friday slot turns that demand into empty seats. Keep the sponsor-backed programme and move the session to Tuesday."
-            wrapping="true"
-            class="heroSummary" />
-        </VBox>
-      </f:DynamicPageHeader>
-    </f:header>
 
     <f:content>
       <VBox width="100%" class="wsPageContent">

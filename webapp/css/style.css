@@ -32,50 +32,10 @@
   letter-spacing: 0.075em;
 }
 
-.storyHeader.sapFDynamicPageHeader,
 .planHeader.sapFDynamicPageHeader {
   padding: 0 !important;
   border: 0;
   box-shadow: none;
-}
-
-.heroContent {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 2.25rem clamp(1rem, 4vw, 4rem);
-  color: #ffffff;
-  background:
-    radial-gradient(circle at 88% 20%, rgba(245, 158, 11, 0.25), transparent 28%),
-    linear-gradient(118deg, #0f2f78 0%, #1e40af 54%, #1d4ed8 100%);
-}
-
-.heroContent .sapMTitle,
-.heroContent .sapMText {
-  color: #ffffff !important;
-}
-
-.heroMeta {
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.heroMeta .sapMText {
-  color: rgba(255, 255, 255, 0.82) !important;
-  font-size: 0.875rem;
-}
-
-.heroHeadline {
-  max-width: 64rem;
-  font-size: clamp(1.65rem, 3vw, 2.5rem) !important;
-  line-height: 1.18 !important;
-}
-
-.heroSummary {
-  max-width: 56rem;
-  margin-top: 0.75rem;
-  color: rgba(255, 255, 255, 0.88) !important;
-  font-size: 1rem !important;
-  line-height: 1.55 !important;
 }
 
 .wsPageContent {
@@ -304,10 +264,6 @@
 }
 
 @media (max-width: 48rem) {
-  .heroContent {
-    padding: 1.5rem 1rem;
-  }
-
   .wsPageContent {
     padding: 1.25rem 0.75rem 2rem;
   }
