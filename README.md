@@ -2,6 +2,26 @@
 
 This repository contains only the local SAPUI5 app and data needed for the hackathon. Use the deployed workshop URL shared by the facilitator to read the case, explore the SQLite data in the Query Playground, and browse reference UI blocks.
 
+## Solution
+
+The finished app is a three-page decision dashboard for the Coding Club:
+
+1. **The answer** — demand remains strong, but the recurring Friday slot causes no-shows.
+2. **The proof** — topic quality and promotion are ruled out; the Friday effect repeats across comparable clubs.
+3. **The action** — move the workshop to M105 on Tuesday at 18:00 and run a controlled four-week pilot.
+
+### Page 1 — The answer
+
+![The answer dashboard](docs/screenshots/page1-answer.jpg)
+
+### Page 2 — The proof
+
+![The proof dashboard](docs/screenshots/page2-proof.jpg)
+
+### Page 3 — The action
+
+![The action dashboard](docs/screenshots/page3-action.jpg)
+
 ## Start
 
 ```bash
